@@ -7,14 +7,13 @@
   "main": "./app/server/main.js",
   "homepage": "https://github.com/Microsoft/BotFramework-Emulator",
   "scripts": {
-    "env": "cross-env TEST=%INTERNAL_ELECTRON_MIRROR% echo (%TEST%)",
     "build": "run-s typecheck lint build:electron",
     "build:electron": "babel ./src --out-dir app/server --extensions \".ts,.tsx\" --ignore \"**/*.spec.ts\" && npm run copy:extension:stubs",
     "copy:extension:stubs": "ncp src/extensions app/extensions",
-    "dist": "cross-env ELECTRON_MIRROR=%INTERNAL_ELECTRON_MIRROR% ELECTRON_CUSTOM_DIR=%INTERNAL_ELECTRON_DIR% electron-builder",
+    "dist": "electron-builder",
     "lint": "eslint --color --quiet --ext .js,.jsx,.ts,.tsx ./src",
     "lint:fix": "npm run lint -- --fix",
-    "pack": "cross-env ELECTRON_MIRROR=%INTERNAL_ELECTRON_MIRROR% ELECTRON_CUSTOM_DIR=%INTERNAL_ELECTRON_DIR% electron-builder --dir",
+    "pack": "electron-builder --dir",
     "start": "concurrently --kill-others --names \"electron,react-app\" --success first \"npm run start:electron:dev\" \"npm run start:react-app\"",
     "start:electron": "./node_modules/.bin/electron --inspect=7777 --remote-debugging-port=7778 .",
     "start:electron:dev": "cross-env ELECTRON_TARGET_URL=http://localhost:3000/ npm run start:electron",
@@ -154,7 +153,7 @@
     "copyright": "Copyright © 2018 Microsoft Corporation",
     "electronDownload": {
       "version": "4.1.1",
-      "mirror": "${env.INTERNAL_ELECTRON_MIRROR}"
+      "mirror": "${env.ELECTRON_MIRROR}"
     },
     "protocols": [
       {
